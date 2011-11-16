@@ -27,6 +27,8 @@ class Model(object):
       body = body + field.toJavaField()  + "\n\n"
     for field in self.fields:
       body = body + field.toJavaGetter()  + "\n\n"
+    for field in self.fields:
+      body = body + field.toJavaSetter()  + "\n\n"
     return body + "}"
   
 
@@ -87,9 +89,17 @@ class Field(object):
     return ret    
   #return a java getter for the field
   def toJavaGetter(self):
-    ret = "public "+self._type+" get"+self.name+"() {\n"
+    ret = "public "+self._type+" get"+self.name[0].upper()+""+self.name[1:]+"() {\n"
     ret = ret + " return " + self.name +";\n}" 
     return ret
+
+  #return a java setter for the field
+  def toJavaSetter(self):
+    ret = "public void set"+self.name[0].upper()+""+self.name[1:]+"( "+self._type+ " "+self.name+") {\n"
+    ret = ret + " this." + self.name + "="+self.name+";\n}" 
+    return ret
+
+
 
 
 #Contains the global configuration information of the current
@@ -158,12 +168,11 @@ if __name__ == "__main__":
   config = ParseUtils.get_configuration(content) 
   models = ParseUtils.get_models(content)
   
-
-  print config.get_java_header()
   FileUtils.create_source_dir()
   for model in models:
-    print model.toJavaBody()
-    FileUtils.create_source_file(model.name+".java",config.get_java_header()+"\n\n"+model.toJavaBody())
+    filename  = model.name +".java"
+    FileUtils.create_source_file(filename,config.get_java_header()+"\n\n"+model.toJavaBody())
+    print "Created:      "+filename
 
 
 

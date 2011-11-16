@@ -20,3 +20,13 @@ Models:
     even:
       type: boolean
 
+  Counter:
+    id:
+      type: int
+      generated: true
+    value:
+      type: int
+    date:
+      type: Date
+
+
