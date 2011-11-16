@@ -22,8 +22,8 @@ EXAMPLE
 =======
 
 From this Yaml file, the program will generate two java models *SimpleData* and *Counter* and will create all the necessary anotations, getters, setters and so forth...
-<blockquote>
-#A model
+
+`#A model
 Models:
   SimpleData:
     id:
@@ -47,10 +47,7 @@ Models:
     value:
       type: int
     date:
-      type: Date
-
-</blockquote>
-
+      type: Date`
 
 
 
