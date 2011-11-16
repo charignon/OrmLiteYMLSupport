@@ -36,21 +36,27 @@ class Model(object):
 
 #Represents a field of a model
 class Field(object):
-  _type     = ""   
-  name      = ""
-  index     = False
-  generated = False
-  
+  _type       = ""   
+  name        = ""
+  index       = False
+  generated   = False
+  foreign     = False
+  canBeNull   = False
+  columnName  = "" 
+
   def __init__(self, content, model_name, field_name):
     self.name = field_name
     for item in content[MODELS][model_name][field_name]:
-      if item == "type":
-        self._type  = content[MODELS][model_name][field_name][item]
-      elif item == "generated":
-        self.generated  = content[MODELS][model_name][field_name][item]
-      elif item == "index":
-        self.index  = content[MODELS][model_name][field_name][item]
-  
+      item_parsed  = content[MODELS][model_name][field_name][item]
+      if item == "type":                self._type      = item_parsed
+      elif item == "generated":         self.generated  =  item_parsed
+      elif item == "index":             self.index      = item_parsed
+      elif item == "canBeNull":         self.canBeNull  = item_parsed
+      elif item == "foreign":           self.foreign      = item_parsed
+      elif item == "columnName":        self.columnName   = item_parsed
+
+
+
   def __str__(self):
     ret = self._type + " " + self.name + " index:" + str(self.index)+   " generated:"+str(self.generated) 
     return ret
@@ -68,6 +74,15 @@ class Field(object):
       modifiers.append("index = true")
     if self.generated:
       modifiers.append("generated = true")
+    if self.foreign:
+      modifiers.append("foreign = true")
+    if self.canBeNull:
+      modifiers.append("canBeNull = true")
+    if self.columnName:
+      modifiers.append("columnName = \""+self.columnName+"\"")
+
+
+
     if len(modifiers) > 1:
       result = "("
       for modifier in modifiers : 
@@ -83,20 +98,20 @@ class Field(object):
 
   #return the field in the java style
   def toJavaField(self):
-    ret = "@DatabaseField"
-    ret = ret + self.getModifiers() +"\n"
+    ret = "  @DatabaseField"
+    ret = ret + self.getModifiers() +"\n  "
     ret = ret +  "private " + str(self._type) + " " + str(self.name)+";"
     return ret    
   #return a java getter for the field
   def toJavaGetter(self):
-    ret = "public "+self._type+" get"+self.name[0].upper()+""+self.name[1:]+"() {\n"
-    ret = ret + " return " + self.name +";\n}" 
+    ret = "  public "+self._type+" get"+self.name[0].upper()+""+self.name[1:]+"() {\n      "
+    ret = ret + " return " + self.name +";\n  }" 
     return ret
 
   #return a java setter for the field
   def toJavaSetter(self):
-    ret = "public void set"+self.name[0].upper()+""+self.name[1:]+"( "+self._type+ " "+self.name+") {\n"
-    ret = ret + " this." + self.name + "="+self.name+";\n}" 
+    ret = "  public void set"+self.name[0].upper()+""+self.name[1:]+"( "+self._type+ " "+self.name+") {\n      "
+    ret = ret + " this." + self.name + "="+self.name+";\n  }" 
     return ret
 
 

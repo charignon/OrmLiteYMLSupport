@@ -13,6 +13,7 @@ Models:
     string:
       type: String
       generated: true
+      columnName: "BOB"
     millis:
       type: long
     date:
