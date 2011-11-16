@@ -173,6 +173,21 @@ This is what *SimpleData.java* looks like:
 
     }
 
+For the moment, it just does this. 
+In the near future, the goal is to be able to general the *omllite_config.txt* file and the database helper file so that one can do it's own ORMLite based project by tweaking only this config file.
+Of course the java files are not yet completed and the import still have to be handled by Eclipse (or any other software or the developper itself).
+
+The generated file can be customized with a few options that are located on the top of the python script:
+
+    #Input configuration
+    FILENAME    = "config.yml"
+    #Output configuration
+    SRC_DIR     = "examples"
+    #output the getters and the setters
+    GETTERS     = True
+    SETTERS     = True
+
+They are qui straightforward and you can change them to obtain the desired result.
 
 [1]: http://ormlite.com/        "ORMLite"
 [2]: http://www.doctrine-project.org/documentation/manual/1_2/pl/yaml-schema-files  "Doctrine YAML Schema"
