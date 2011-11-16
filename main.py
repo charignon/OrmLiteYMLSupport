@@ -1,8 +1,17 @@
 import yaml
 
 #Keywords of the YML file
-MODELS = "Models"
-CONFIG = "Config"
+MODELS  = "Models"
+CONFIG  = "Config"
+SRC_DIR = "src"
+
+
+
+
+
+
+
+
 
 class Field(object):
   _type     = ""   
@@ -48,12 +57,16 @@ class Field(object):
     else:
       return ""
 
-
   def toJavaField(self):
     ret = "@DatabaseField"
-    ret = ret + getModifiers(self) +"\n"
-    
-    
+    ret = ret + self.getModifiers() +"\n"
+    ret = ret +  "private " + str(self._type) + " " + str(self.name)+";"
+    return ret    
+  
+  def toJavaGetter(self):
+    ret = "public "+self._type+" get"+self.name+"() {\n"
+    ret = ret + " return " + self.name +";\n}" 
+    return ret
 
 
 
@@ -79,11 +92,14 @@ class Model(object):
   def __str__(self):
     return str(self.fields)
   def toJavaBody(self):
-    body = "public class "+self.name+" { \n"
+    body  = "@DatabaseTable\n"
+    body = body + "public class "+self.name+" { \n\n"
     for field in self.fields:
-      field.getModifiers()
-    return body
-
+      body = body + field.toJavaField()  + "\n\n"
+    for field in self.fields:
+      body = body + field.toJavaGetter()  + "\n\n"
+    return body + "}"
+  
 
 
 
