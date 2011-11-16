@@ -33,9 +33,9 @@ FOREIGN     = "foreign"
 
 
 #Output configuration
-SRC_DIR     = "src"
+SRC_DIR     = "examples"
 #output the getters and the setters
-GETTERS     = False
+GETTERS     = True
 SETTERS     = True
 
 
