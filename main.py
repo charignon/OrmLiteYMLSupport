@@ -1,4 +1,6 @@
 import yaml
+import shutil
+import os
 
 #Keywords of the YML file
 MODELS  = "Models"
@@ -142,7 +144,16 @@ class ParseUtils(object):
       return models
 
 
-
+class FileUtils(object):
+  @staticmethod
+  def create_source_dir():
+    shutil.rmtree("./"+SRC_DIR, ignore_errors=True)
+    os.mkdir(SRC_DIR)
+  @staticmethod
+  def create_source_file(filename, content):
+    f = open("./"+SRC_DIR+"/"+filename,"w")
+    f.write(content)
+    f.close()
 
 
 
@@ -156,5 +167,15 @@ if __name__ == "__main__":
   
 
   print config.get_java_header()
+  FileUtils.create_source_dir()
   for model in models:
     print model.toJavaBody()
+    FileUtils.create_source_file(model.name+".java",config.get_java_header()+"\n\n"+model.toJavaBody())
+
+
+
+
+
+
+
+
