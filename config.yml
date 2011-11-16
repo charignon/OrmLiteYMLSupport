@@ -1,0 +1,22 @@
+#Generic information
+Config:
+  package-name: com.example.helloandroid
+
+
+
+Models:
+  #A model
+  SimpleData:
+    id:
+      type: int
+      generated: true
+    string:
+      type: String
+      generated: true
+    millis:
+      type: long
+    date:
+      type: Date
+    even:
+      type: boolean
+
