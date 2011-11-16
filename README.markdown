@@ -23,31 +23,31 @@ EXAMPLE
 
 From this Yaml file, the program will generate two java models *SimpleData* and *Counter* and will create all the necessary anotations, getters, setters and so forth...
 
-`#A model
-Models:
-  SimpleData:
-    id:
-      type: int
-      generated: true
-    string:
-      type: String
-      generated: true
-      columnName: "BOB"
-    millis:
-      type: long
-    date:
-      type: Date
-    even:
-      type: boolean
+        #A model
+        Models:
+          SimpleData:
+            id:
+              type: int
+              generated: true
+            string:
+              type: String
+              generated: true
+              columnName: "BOB"
+            millis:
+              type: long
+            date:
+              type: Date
+            even:
+              type: boolean
 
-  Counter:
-    id:
-      type: int
-      generated: true
-    value:
-      type: int
-    date:
-      type: Date`
+          Counter:
+            id:
+              type: int
+              generated: true
+            value:
+              type: int
+            date:
+              type: Date
 
 
 
