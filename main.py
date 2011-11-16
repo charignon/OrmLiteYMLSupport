@@ -147,7 +147,7 @@ class Field(object):
 
   #return a java setter for the field
   def toJavaSetter(self):
-    ret = "  public void set"+self.name[0].upper()+""+self.name[1:]+"( "+self._type+ " "+self.name+") {\n      "
+    ret = "  public void set"+self.name[0].upper()+""+self.name[1:]+"( "+self._type+ " "+self.name+" ) {\n      "
     ret = ret + " this." + self.name + "="+self.name+";\n  }" 
     return ret
 

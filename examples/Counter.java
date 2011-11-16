@@ -37,7 +37,7 @@ public class Counter {
        return date;
   }
 
-  public void setDate( Date date) {
+  public void setDate( Date date ) {
        this.date=date;
   }
 
@@ -45,7 +45,7 @@ public class Counter {
        return id;
   }
 
-  public void setId( int id) {
+  public void setId( int id ) {
        this.id=id;
   }
 
@@ -53,7 +53,7 @@ public class Counter {
        return value;
   }
 
-  public void setValue( int value) {
+  public void setValue( int value ) {
        this.value=value;
   }
 
@@ -61,7 +61,7 @@ public class Counter {
        return date;
   }
 
-  public void setDate( Date date) {
+  public void setDate( Date date ) {
        this.date=date;
   }
 
@@ -69,7 +69,7 @@ public class Counter {
        return even;
   }
 
-  public void setEven( boolean even) {
+  public void setEven( boolean even ) {
        this.even=even;
   }
 
@@ -77,7 +77,7 @@ public class Counter {
        return millis;
   }
 
-  public void setMillis( long millis) {
+  public void setMillis( long millis ) {
        this.millis=millis;
   }
 
@@ -85,7 +85,7 @@ public class Counter {
        return id;
   }
 
-  public void setId( int id) {
+  public void setId( int id ) {
        this.id=id;
   }
 
@@ -93,7 +93,7 @@ public class Counter {
        return string;
   }
 
-  public void setString( String string) {
+  public void setString( String string ) {
        this.string=string;
   }
 
