@@ -2,19 +2,37 @@ import yaml
 import shutil
 import os
 
-#Keywords of the YML file
+#Keywords of the YML file and other configuration
 MODELS  = "Models"
 CONFIG  = "Config"
 SRC_DIR = "src"
 
 
 
+#Rerpresents a Model of the database
+class Model(object):
+  name = ""
+  fields=[]
+  def __init__(self, content,model_name ):
+    for field in content[MODELS][model_name]:
+      self.fields.append(Field(content,model_name,field))
+    self.name = str(model_name)
+  def __str__(self):
+    return str(self.fields)
+  #Return the body of the model in java (the core of the java file)
+  def toJavaBody(self):
+    body  = "@DatabaseTable\n"
+    body = body + "public class "+self.name+" { \n\n"
+    for field in self.fields:
+      body = body + field.toJavaField()  + "\n\n"
+    for field in self.fields:
+      body = body + field.toJavaGetter()  + "\n\n"
+    return body + "}"
+  
 
 
 
-
-
-
+#Represents a field of a model
 class Field(object):
   _type     = ""   
   name      = ""
@@ -37,7 +55,9 @@ class Field(object):
 
   def __repr__(self):
     return self.__str__()
-  
+
+  #The modifiers are everything except the type and the name of the field
+  #This function returns the modifier in the Java annotation style
   def getModifiers(self):
     #Make a modifier list
     modifiers = []
@@ -59,19 +79,21 @@ class Field(object):
     else:
       return ""
 
+  #return the field in the java style
   def toJavaField(self):
     ret = "@DatabaseField"
     ret = ret + self.getModifiers() +"\n"
     ret = ret +  "private " + str(self._type) + " " + str(self.name)+";"
     return ret    
-  
+  #return a java getter for the field
   def toJavaGetter(self):
     ret = "public "+self._type+" get"+self.name+"() {\n"
     ret = ret + " return " + self.name +";\n}" 
     return ret
 
 
-
+#Contains the global configuration information of the current
+#generation process
 class ConfigInfo(object):
   package_name = None
   def __init__(self):
@@ -84,39 +106,9 @@ class ConfigInfo(object):
     else:
       return ""
 
-class Model(object):
-  name = ""
-  fields=[]
-  def __init__(self, content,model_name ):
-    for field in content[MODELS][model_name]:
-      self.fields.append(Field(content,model_name,field))
-    self.name = str(model_name)
-  def __str__(self):
-    return str(self.fields)
-  def toJavaBody(self):
-    body  = "@DatabaseTable\n"
-    body = body + "public class "+self.name+" { \n\n"
-    for field in self.fields:
-      body = body + field.toJavaField()  + "\n\n"
-    for field in self.fields:
-      body = body + field.toJavaGetter()  + "\n\n"
-    return body + "}"
-  
 
-
-
-
-
-
-
-
-
-
-
-
-
+#Retrieve the configuration and the models from the java file
 class ParseUtils(object):
-
   #Get the configuration information
   @staticmethod
   def get_configuration(content):
@@ -144,6 +136,7 @@ class ParseUtils(object):
       return models
 
 
+#Does basic operation on files (high level)
 class FileUtils(object):
   @staticmethod
   def create_source_dir():
