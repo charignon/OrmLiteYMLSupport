@@ -2,11 +2,22 @@ import yaml
 import shutil
 import os
 
-#Keywords of the YML file and other configuration
-MODELS  = "Models"
-CONFIG  = "Config"
-SRC_DIR = "src"
+#Keywords supported in the the YML file
+MODELS      = "Models"
+CONFIG      = "Config"
+FIELDTYPE   = "type"
+GENERATED   = "generated"
+INDEX       = "index"
+CAN_BE_NULL = "canBeNull"
+COLUMN_NAME = "columnName"
+FOREIGN     = "foreign"
 
+
+#Output configuration
+SRC_DIR     = "src"
+#output the getters and the setters
+GETTERS     = False
+SETTERS     = True
 
 
 #Rerpresents a Model of the database
@@ -25,10 +36,9 @@ class Model(object):
     body = body + "public class "+self.name+" { \n\n"
     for field in self.fields:
       body = body + field.toJavaField()  + "\n\n"
-    for field in self.fields:
-      body = body + field.toJavaGetter()  + "\n\n"
-    for field in self.fields:
-      body = body + field.toJavaSetter()  + "\n\n"
+    for field in self.fields:  
+      if GETTERS : body =body + field.toJavaGetter()  + "\n\n"
+      if SETTERS : body =body + field.toJavaSetter()  + "\n\n"
     return body + "}"
   
 
@@ -48,12 +58,12 @@ class Field(object):
     self.name = field_name
     for item in content[MODELS][model_name][field_name]:
       item_parsed  = content[MODELS][model_name][field_name][item]
-      if item == "type":                self._type      = item_parsed
-      elif item == "generated":         self.generated  =  item_parsed
-      elif item == "index":             self.index      = item_parsed
-      elif item == "canBeNull":         self.canBeNull  = item_parsed
-      elif item == "foreign":           self.foreign      = item_parsed
-      elif item == "columnName":        self.columnName   = item_parsed
+      if item == FIELDTYPE:           self._type      = item_parsed
+      elif item == GENERATED:         self.generated  =  item_parsed
+      elif item == INDEX:             self.index      = item_parsed
+      elif item == CAN_BE_NULL:       self.canBeNull  = item_parsed
+      elif item == FOREIGN:           self.foreign      = item_parsed
+      elif item == COLUMN_NAME:       self.columnName   = item_parsed
 
 
 
@@ -86,9 +96,9 @@ class Field(object):
     if len(modifiers) > 1:
       result = "("
       for modifier in modifiers : 
-        result = result + modifier +","
+        result = result + modifier +", "
       #remove the trailing ,
-      return result[:-1]+")"
+      return result[:-2]+")"
 
     elif len(modifiers) == 1:
       return "("+modifiers[0]+")"
@@ -182,12 +192,13 @@ if __name__ == "__main__":
   f.close()
   config = ParseUtils.get_configuration(content) 
   models = ParseUtils.get_models(content)
-  
+  print "Generate getters     "+str(GETTERS)
+  print "Generate setters     "+str(SETTERS) 
   FileUtils.create_source_dir()
   for model in models:
     filename  = model.name +".java"
     FileUtils.create_source_file(filename,config.get_java_header()+"\n\n"+model.toJavaBody())
-    print "Created:      "+filename
+    print "Created              "+filename
 
 
 
