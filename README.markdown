@@ -15,46 +15,48 @@ INSTALL
 You need to install python 2.7 and pyyaml extension for python before using this script.
 On Ubuntu 11.10:
 
-        sudo easy_install pyyaml
+    sudo easy_install pyyaml
 
 For the moment the script reads the content of a .yml file and generate the java classes (not yet the configuration files) on a separate directory.
 Those detailed could be changed in the first line of the python script (for the moment main.py).
 A sample of .yml file is attached in the folder as well as some sample outputs
 To launch the script just type:
 
-        python ./main.py
+    python ./main.py
 
 
 EXAMPLE
 =======
 
 From this Yaml file, the program will generate two java models *SimpleData* and *Counter* and will create all the necessary anotations, getters, setters and so forth...
+    
+    #config.yml
+        
+    #A model
+    Models:
+      SimpleData:
+        id:
+          type: int
+          generated: true
+        string:
+          type: String
+          generated: true
+          columnName: "BOB"
+        millis:
+          type: long
+        date:
+          type: Date
+        even:
+          type: boolean
 
-        #A model
-        Models:
-          SimpleData:
-            id:
-              type: int
-              generated: true
-            string:
-              type: String
-              generated: true
-              columnName: "BOB"
-            millis:
-              type: long
-            date:
-              type: Date
-            even:
-              type: boolean
-
-          Counter:
-            id:
-              type: int
-              generated: true
-            value:
-              type: int
-            date:
-              type: Date
+      Counter:
+        id:
+          type: int
+          generated: true
+        value:
+          type: int
+        date:
+          type: Date
 
 
 [1]: http://ormlite.com/        "ORMLite"
